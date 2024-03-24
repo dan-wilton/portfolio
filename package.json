@@ -1,5 +1,5 @@
 {
-  "name": "",
+  "name": "danielwilton-portfolio",
   "type": "module",
   "version": "0.0.1",
   "scripts": {
@@ -13,5 +13,11 @@
     "astro": "^4.5.9",
     "@astrojs/check": "^0.5.10",
     "typescript": "^5.4.3"
-  }
+  },
+  "devDependencies": {
+    "@flydotio/dockerfile": "latest"
+  },
+  "trustedDependencies": [
+     "sharp"
+  ]
 }
