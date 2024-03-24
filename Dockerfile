@@ -1,46 +1,41 @@
-# syntax = docker/dockerfile:1
+FROM oven/bun:latest as base
+WORKDIR /usr/src/app
 
-# Adjust BUN_VERSION as desired
-ARG BUN_VERSION=1.0.35
-FROM oven/bun:${BUN_VERSION}-slim as base
+# install dependencies into temp directory
+# this will cache them and speed up future builds
+FROM base AS install
 
-LABEL fly_launch_runtime="Bun"
+RUN mkdir -p /temp/dev
+COPY package.json bun.lockb /temp/dev/
 
-# Bun app lives here
-WORKDIR /app
+RUN cd /temp/dev && bun install --frozen-lockfile
 
-# Set production environment
-ENV NODE_ENV="production"
+# install with --production (exclude devDependencies)
+RUN mkdir -p /temp/prod
+COPY package.json bun.lockb /temp/prod/
+RUN cd /temp/prod && bun install --frozen-lockfile --production
 
 
-# Throw-away build stage to reduce size of final image
-FROM base as build
+# copy node_modules from temp directory
+# then copy all (non-ignored) project files into the image
+FROM base AS prerelease
 
-# Install packages needed to build node modules
-RUN apt-get update -qq && \
-    apt-get install --no-install-recommends -y build-essential node-gyp pkg-config python-is-python3
+COPY --from=install /temp/dev/node_modules node_modules
+COPY . .
 
-# Install node modules
-COPY --link bun.lockb package.json ./
-RUN bun install
-
-# Copy application code
-COPY --link . .
-
-# Build application
+# [optional] tests & build
+ENV NODE_ENV=production
 RUN bun run build
+RUN mkdir -p /app/dist/
+RUN cp -r ./dist/ /app/dist/
 
-# Remove development dependencies
-RUN rm -rf node_modules && \
-    bun install --ci
+# copy production dependencies and source code into final image
+FROM base AS release
+COPY --from=install /temp/prod/node_modules node_modules
+COPY --from=prerelease /usr/src/app/index.ts .
+COPY --from=prerelease /usr/src/app/package.json .
 
 
-# Final stage for app image
-FROM nginx
+FROM pierrezemb/gostatic
 
-# Copy built application
-COPY --from=build /app/dist /usr/share/nginx/html
-
-# Start the server by default, this can be overwritten at runtime
-EXPOSE 80
-CMD [ "/usr/sbin/nginx", "-g", "daemon off;" ]
+COPY --from=prerelease /app/dist/* /srv/http/
