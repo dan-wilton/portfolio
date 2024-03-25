@@ -11,11 +11,20 @@
   },
   "dependencies": {
     "@astrojs/check": "^0.5.10",
+    "@astrojs/preact": "^3.1.1",
+    "@astrojs/tailwind": "^5.1.0",
+    "@headlessui/react": "^1.7.18",
+    "@heroicons/react": "^2.1.3",
     "astro": "4.4.2",
+    "preact": "^10.20.1",
+    "preline": "^2.0.3",
+    "tailwindcss": "^3.4.1",
     "typescript": "^5.4.3"
   },
   "devDependencies": {
-    "@flydotio/dockerfile": "latest"
+    "@flydotio/dockerfile": "latest",
+    "@tailwindcss/forms": "^0.5.7",
+    "daisyui": "latest"
   },
   "trustedDependencies": [
     "sharp"
