@@ -4,9 +4,20 @@ export default {
     './src/**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}',
     './node_modules/preline/preline.js',
   ],
-	theme: {
-		extend: {},
-	},
+  theme: {
+    extend: {
+      fontFamily: {
+        sans: ['JetBrains Mono Variable', 'monospace'],
+      },
+      spacing: {
+        '8xl': '96rem',
+        '9xl': '128rem',
+      },
+      borderRadius: {
+        '4xl': '2rem',
+      }
+    }
+  },
 	plugins: [
 		require('@tailwindcss/forms'),
 		require('preline/plugin'),
