@@ -8,7 +8,10 @@ jobs:
   deploy:
     name: Deploy Production
     runs-on: ubuntu-latest
-    concurrency: deploy-prod-group    # Single concurrency
+    concurrency: deploy-prod-group # Single concurrency
+    environment:
+      name: production
+      url: https://danielwilton-portfolio.fly.dev/
     steps:
       - uses: actions/checkout@v4
       - uses: superfly/flyctl-actions/setup-flyctl@master

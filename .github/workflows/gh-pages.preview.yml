@@ -1,0 +1,60 @@
+name: Deploy to GitHub Pages PR Preview
+
+on:
+  pull_request:
+    branches: [main]
+    types:
+      - opened
+      - reopened
+      - synchronize
+      - closed
+
+concurrency: preview-${{ github.ref }}
+
+# Allow this job to clone the repo and create a page deployment
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+  pull-requests: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+
+      - uses: oven-sh/setup-bun@v1
+
+      # run any `bun` or `bunx` command
+      - name: Install and Build
+        env:
+          PR_NUMBER: ${{ github.event.number }}
+        run: |
+          bun install
+          URL_PREFIX="portfolio/pr-preview/pr-$PR_NUMBER" bun run build
+          touch ./dist/.nojekyll
+
+      - uses: actions/upload-artifact@master
+        with:
+          name: github-pages
+          path: ./dist/
+      
+      
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+
+      - uses: actions/download-artifact@master
+        with:
+          name: github-pages
+          path: ./dist/
+
+      - name: Deploy preview
+        uses: rossjrw/pr-preview-action@v1
+        with:
+          source-dir: ./dist/
