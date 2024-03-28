@@ -2,7 +2,7 @@ name: Deploy to GitHub Pages PR Preview
 
 on:
   pull_request:
-    branches: [feature]
+    branches: [main]
     types:
       - opened
       - reopened
