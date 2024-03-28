@@ -21,10 +21,10 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout your repository using git
+      - name: Checkout Repo
         uses: actions/checkout@v4
 
-      - name: Install, build, and upload
+      - name: Install, Build, and Upload
         if: github.event.action != 'closed'
         uses: withastro/action@v2
         # with:
@@ -38,6 +38,12 @@ jobs:
     environment:
       name: github-pages
     steps:
+
+      - uses: actions/download-artifact@master
+        with:
+          name: github-pages
+          path: ./dist/
+
       - name: Deploy preview
         uses: rossjrw/pr-preview-action@v1
         with:
