@@ -38,6 +38,8 @@ jobs:
     environment:
       name: github-pages
     steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v4
 
       - uses: actions/download-artifact@master
         with:
