@@ -1,16 +1,13 @@
-name: Deploy to GitHub Pages
+name: Deploy to GitHub Pages PR Preview
 
 on:
-  # Trigger the workflow every time you push to main
-  push: 
-    branches: [main]
+  push:
 
-  # Allows you to run this workflow manually from the Actions tab on GitHub.
-  workflow_dispatch:
+concurrency: main-gh-pages
 
 # Allow this job to clone the repo and create a page deployment
 permissions:
-  contents: read
+  contents: write
   pages: write
   id-token: write
 
@@ -18,23 +15,35 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout your repository using git
+      - name: Checkout Repo
         uses: actions/checkout@v4
 
-      - name: Install, build, and upload your site
-        uses: withastro/action@v2
-        # with:
-          # path: . # The root location of your Astro project inside the repository. (optional)
-          # node-version: 20 # The specific version of Node that should be used to build your site. Defaults to 20. (optional)
-          # package-manager: pnpm@latest # The Node package manager that should be used to install dependencies and build your site. Automatically detected based on your lockfile. (optional)
+      - uses: oven-sh/setup-bun@v1
 
+      - name: Install and Build
+        run: |
+          bun install
+          bun run build
+
+      - uses: actions/upload-artifact@master
+        with:
+          name: github-pages
+          path: ./dist/
+      
+      
   deploy:
     needs: build
     runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+
+      - uses: actions/download-artifact@master
+        with:
+          name: github-pages
+          path: ./dist/
+
+      - name: Deploy 🚀
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          folder: dist # The folder the action should deploy.
