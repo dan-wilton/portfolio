@@ -2,7 +2,6 @@ name: Deploy to GitHub Pages PR Preview
 
 on:
   push:
-    branches: [main]
 
 concurrency: main-gh-pages
 
