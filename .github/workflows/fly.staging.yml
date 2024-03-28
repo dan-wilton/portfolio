@@ -6,8 +6,9 @@ on:
 jobs:
   deploy:
     name: Deploy Staging
+    environment: staging
     runs-on: ubuntu-latest
-    concurrency: deploy-staging-group    # Single concurrency
+    concurrency: deploy-staging-group # Single concurrency
     steps:
       - uses: actions/checkout@v4
       - uses: superfly/flyctl-actions/setup-flyctl@master

@@ -8,7 +8,8 @@ jobs:
   deploy:
     name: Deploy Production
     runs-on: ubuntu-latest
-    concurrency: deploy-prod-group    # Single concurrency
+    concurrency: deploy-prod-group # Single concurrency
+    environment: production
     steps:
       - uses: actions/checkout@v4
       - uses: superfly/flyctl-actions/setup-flyctl@master
