@@ -28,9 +28,11 @@ jobs:
 
       # run any `bun` or `bunx` command
       - name: Install and Build
+        env:
+          PR_NUMBER: ${{ github.event.number }}
         run: |
           bun install
-          bun run build
+          URL_PREFIX="/portfolio/pr-preview/pr-$PR_NUMBER" bun run build
 
       - uses: actions/upload-artifact@master
         with:

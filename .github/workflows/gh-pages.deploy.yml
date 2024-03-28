@@ -24,7 +24,7 @@ jobs:
       - name: Install and Build
         run: |
           bun install
-          bun run build
+          URL_PREFIX="/portfolio" bun run build
 
       - uses: actions/upload-artifact@master
         with:
