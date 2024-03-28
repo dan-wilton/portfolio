@@ -32,7 +32,7 @@ jobs:
           PR_NUMBER: ${{ github.event.number }}
         run: |
           bun install
-          URL_PREFIX="/portfolio/pr-preview/pr-$PR_NUMBER" bun run build
+          URL_PREFIX="portfolio/pr-preview/pr-$PR_NUMBER" bun run build
 
       - uses: actions/upload-artifact@master
         with:
