@@ -1,12 +1,15 @@
-name: Deploy to GitHub Pages
+name: Deploy to GitHub Pages PR Preview
 
 on:
-  # Trigger the workflow every time you push to main
-  push: 
+  pull_request:
     branches: [main]
+    types:
+      - opened
+      - reopened
+      - synchronize
+      - closed
 
-  # Allows you to run this workflow manually from the Actions tab on GitHub.
-  workflow_dispatch:
+concurrency: preview-${{ github.ref }}
 
 # Allow this job to clone the repo and create a page deployment
 permissions:
@@ -21,7 +24,8 @@ jobs:
       - name: Checkout your repository using git
         uses: actions/checkout@v4
 
-      - name: Install, build, and upload your site
+      - name: Install, build, and upload
+        if: github.event.action != 'closed'
         uses: withastro/action@v2
         # with:
           # path: . # The root location of your Astro project inside the repository. (optional)
@@ -33,8 +37,8 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+      - name: Deploy preview
+        uses: rossjrw/pr-preview-action@v1
+        with:
+          source-dir: ./build/
