@@ -33,6 +33,7 @@ jobs:
         run: |
           bun install
           URL_PREFIX="portfolio/pr-preview/pr-$PR_NUMBER" bun run build
+          touch ./dist/.nojekyll
 
       - uses: actions/upload-artifact@master
         with:
