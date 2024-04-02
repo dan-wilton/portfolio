@@ -1,8 +1,12 @@
 ---
 import Layout from "../layouts/Layout.astro";
+import KBarToggleEvent from "../components/KBarToggleEvent.tsx";
 import Header from "../components/Header.astro";
+import KBar from "../components/KBar.astro";
 ---
 
 <Layout title="Daniel Wilton - Principal Technologist - Bristol">
+  <KBarToggleEvent client:load />
+  <KBar />
   <Header title="Daniel Wilton" />
 </Layout>

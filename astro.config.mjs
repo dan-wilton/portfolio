@@ -1,11 +1,21 @@
-import { defineConfig } from 'astro/config';
+import { defineConfig } from "astro/config";
 import tailwind from "@astrojs/tailwind";
-
+import react from "@astrojs/react";
 
 // https://astro.build/config
 export default defineConfig({
-  integrations: [tailwind()],
-  site: 'https://dan-wilton.github.io',
+  integrations: [
+    tailwind(),
+    react({
+      include: ["**/react/*"],
+    }),
+  ],
+  site: "https://dan-wilton.github.io",
   base: process.env.URL_PREFIX,
-  trailingSlash: "always"
+  trailingSlash: "always",
+  vite: {
+    ssr: {
+      noExternal: ["kbar" /*, 'other-lib-you-need'*/],
+    },
+  },
 });
