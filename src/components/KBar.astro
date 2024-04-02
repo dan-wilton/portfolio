@@ -1,0 +1,46 @@
+---
+import LiveSearchBar from "../components/LiveSearchBar.tsx";
+
+const options = ["projects", "skills", "hobbies"];
+---
+
+<div data-hs-overlay="#kbar-modal"></div>
+<div
+  id="kbar-modal"
+  class="hs-overlay hidden size-full fixed top-0 start-0 z-[60] overflow-x-hidden overflow-y-auto pointer-events-none"
+>
+  <div
+    class="flex grid justify-center w-5/6 grid-cols-1 mx-auto mt-56 transition-all opacity-0 pointer-events-none sm:w-3/6 mb-80 hs-overlay-open:opacity-100 hs-overlay-open:duration-500"
+  >
+    <LiveSearchBar client:visible items={options} />
+  </div>
+</div>
+
+<script>
+  import { isKBarOpen, searchTerm } from "../stores/kbarStore.ts";
+
+  let isFirstRun = true;
+
+  // Listen to changes in the store, and show/hide the dialog accordingly
+  isKBarOpen.subscribe((open: boolean) => {
+    if (open) {
+      // @ts-ignore - static HSOverlay is stored in client-side Window by preline. (@preline/overlay)
+      HSOverlay.open("#kbar-modal");
+
+      // @ts-ignore - static HSOverlay is stored in client-side Window by preline. (@preline/overlay)
+      const { element } = HSOverlay.getInstance("#kbar-modal", true);
+
+      // `@preline/overlay` has some control over element closing, keep nanostore in-sync here.
+      element.on("close", (_instance: HTMLElement) => {
+        searchTerm.set("");
+        isKBarOpen.set(false);
+      });
+    } else {
+      if (!isFirstRun) {
+        // @ts-ignore - static HSOverlay is stored in client-side Window by preline. (@preline/overlay)
+        HSOverlay.close("#kbar-modal");
+      }
+    }
+    isFirstRun = false;
+  });
+</script>

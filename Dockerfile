@@ -1,4 +1,4 @@
-FROM oven/bun:latest as base
+FROM oven/bun:1.0.35 as base
 WORKDIR /usr/src/app
 
 # install dependencies into temp directory
@@ -7,6 +7,9 @@ FROM base AS install
 
 RUN mkdir -p /temp/dev
 COPY package.json bun.lockb /temp/dev/
+
+RUN apt-get update
+RUN apt-get install -y python3
 
 RUN cd /temp/dev && bun install --frozen-lockfile
 
