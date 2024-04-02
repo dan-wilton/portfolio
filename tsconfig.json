@@ -6,5 +6,10 @@
     "skipLibCheck": true,
     "moduleResolution": "node"
   },
+  "plugins": [
+    {
+      "name": "@astrojs/ts-plugin"
+    }
+  ],
   "exclude": ["node_modules"]
 }
