@@ -1,0 +1,24 @@
+<div
+  class="absolute z-50 h-screen w-screen transform items-center justify-center bg-white opacity-100 transition-opacity duration-300 ease-in-out dark:bg-gray-800"
+  id="loading"
+>
+  <l-quantum
+    speed="1.4"
+    color="#c083fc"
+    id="loading-icon"
+    size="100"
+    class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
+  ></l-quantum>
+</div>
+
+<script>
+  setTimeout(function () {
+    document
+      .getElementById("loading")!
+      .classList.replace("opacity-100", "opacity-0");
+  }, 1000);
+
+  setTimeout(function () {
+    document.getElementById("loading")!.classList.add("hidden");
+  }, 1300);
+</script>
