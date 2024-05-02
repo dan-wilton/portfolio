@@ -4,9 +4,11 @@ import KBarToggleEvent from "../components/KBarToggleEvent.tsx";
 import Header from "../components/Header.astro";
 import KBar from "../components/KBar.astro";
 import Intro from "../components/Intro.astro";
+import Loading from "../components/Loading.astro";
 ---
 
 <Layout title="Daniel Wilton - Principal Technologist - Bristol">
+  <Loading />
   <KBarToggleEvent client:load />
   <KBar />
   <Header title="DWilton" />

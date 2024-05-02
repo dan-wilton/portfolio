@@ -15,7 +15,7 @@ export default defineConfig({
   trailingSlash: "always",
   vite: {
     ssr: {
-      noExternal: ["kbar" /*, 'other-lib-you-need'*/],
+      noExternal: ["kbar", "vanta" /*, 'other-lib-you-need'*/],
     },
   },
 });

@@ -3,7 +3,7 @@ const { title } = Astro.props;
 ---
 
 <header
-  class="relative z-50 flex w-full flex-wrap bg-white py-4 text-sm dark:bg-gray-800 sm:flex-nowrap sm:justify-start"
+  class="relative flex w-full flex-wrap py-4 text-sm sm:flex-nowrap sm:justify-start"
 >
   <nav
     class="mx-auto w-full max-w-[85rem] px-4 sm:flex sm:items-center sm:justify-between"
@@ -97,6 +97,7 @@ const { title } = Astro.props;
           class="hs-dark-mode group block flex items-center font-medium text-gray-600 hover:text-purple-700 hs-dark-mode-active:hidden dark:text-gray-400 dark:hover:text-gray-500"
           data-hs-theme-click-value="dark"
           aria-label="Dark Mode Enable"
+          id="dark-mode-enable"
         >
           <svg
             class="size-4 flex-shrink-0"
@@ -117,6 +118,7 @@ const { title } = Astro.props;
           class="hs-dark-mode group flex hidden items-center font-medium text-gray-600 hover:text-purple-500 hs-dark-mode-active:block dark:text-gray-400 dark:hover:text-purple-400"
           data-hs-theme-click-value="light"
           aria-label="Dark Mode Disable"
+          id="dark-mode-disable"
         >
           <svg
             class="size-4 flex-shrink-0"
@@ -141,3 +143,15 @@ const { title } = Astro.props;
     </div>
   </nav>
 </header>
+
+<script>
+  import { isDarkMode } from "../stores/darkModeStore.js";
+
+  document
+    .getElementById("dark-mode-enable")!
+    .addEventListener("click", () => isDarkMode.set(true));
+
+  document
+    .getElementById("dark-mode-disable")!
+    .addEventListener("click", () => isDarkMode.set(false));
+</script>
