@@ -56,10 +56,10 @@ const { title } = Astro.props;
   is:inline
   src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"
 ></script>
-<script is:inline src="https://cdn.jsdelivr.net/npm/vanta/dist/vanta.net.min.js"
-></script>
 
 <script>
+  // @ts-ignore: Implicit ANY error
+  import NET from "vanta/dist/vanta.net.min";
   import { isDarkMode } from "../stores/darkModeStore.js";
 
   const computed_style = window.getComputedStyle(
@@ -72,7 +72,7 @@ const { title } = Astro.props;
 
   isDarkMode.subscribe((darkMode) => {
     if (darkMode) {
-      VANTA.NET({
+      NET({
         el: "#background",
         scale: 1.0,
         scaleMobile: 1.0,
@@ -83,7 +83,7 @@ const { title } = Astro.props;
         spacing: 16.0,
       });
     } else {
-      VANTA.NET({
+      NET({
         el: "#background",
         scale: 1.0,
         scaleMobile: 1.0,
