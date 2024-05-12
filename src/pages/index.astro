@@ -7,10 +7,51 @@ import Intro from "../components/Intro.astro";
 import Loading from "../components/Loading.astro";
 ---
 
+<KBar />
 <Layout title="Daniel Wilton - Principal Technologist - Bristol">
-  <Loading />
-  <KBarToggleEvent client:load />
-  <KBar />
-  <Header title="DWilton" />
-  <Intro />
+  <div
+    id="scrollspy-scrollable-parent-1"
+    class="mx-auto w-full overflow-auto px-0"
+  >
+    <Loading />
+    <KBarToggleEvent client:load />
+    <Header title="DWilton" />
+
+    <div id="scrollspy-1" class="mx-auto h-screen w-full px-0">
+      <Intro />
+      <div class="h-full" id="projects"></div>
+      <div class="h-full" id="skills"></div>
+    </div>
+  </div>
+
+  <script>
+    setTimeout(function () {
+      // @ts-ignore - static HSScrollspy is stored in client-side Window by preline. (@preline/scrollspy)
+      const el = HSScrollspy.getInstance(
+        '[data-hs-scrollspy="#scrollspy-1"]',
+        true,
+      );
+
+      // @ts-ignore - static HSCollapse is stored in client-side Window by preline. (@preline/scrollspy)
+      const collapse = HSCollapse.getInstance(
+        '[data-hs-collapse="#navbar-with-mega-menu"]',
+        true,
+      );
+
+      el.element.on("beforeScroll", (_instance: HTMLElement) => {
+        return new Promise((res) => {
+          if (collapse.element.el.classList.contains("open")) {
+            collapse.element.hide();
+
+            // @ts-ignore - static HSStaticMethods is stored in client-side Window by preline. (@preline/plugin)
+            HSStaticMethods.afterTransition(collapse.element.content, () =>
+              res(true),
+            );
+          } else {
+            res(true);
+          }
+        });
+      });
+    }, 5000);
+  </script>
 </Layout>
