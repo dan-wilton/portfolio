@@ -4,6 +4,7 @@ export default {
     "./src/**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}",
     "./node_modules/preline/preline.js",
     "./node_modules/@preline/overlay/index.js",
+    "./node_modules/@preline/scrollspy/index.js",
   ],
   theme: {
     extend: {
