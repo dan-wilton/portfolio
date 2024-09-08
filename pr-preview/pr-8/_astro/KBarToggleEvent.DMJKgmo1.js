@@ -1,1 +1,0 @@
-import{i as e}from"./kbarStore.Crb2YY-7.js";import{r as o}from"./index.DhYZZe0J.js";function a(){o.useEffect(()=>{const r=t=>{(t.metaKey||t.ctrlKey)&&t.code==="KeyK"&&(e.get()===!0?e.set(!1):e.set(!0))};return document.addEventListener("keydown",r,!0),()=>{document.removeEventListener("keydown",r)}},[e])}export{a as default};
